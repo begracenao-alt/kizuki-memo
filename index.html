@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Be Grace｜気づきメモ</title>
+<meta name="theme-color" content="#3a96bf" />
+<meta name="description" content="ディバインからのメッセージ、エンジェルナンバー、その日の気づき。カレンダーに残す場所。" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="気づきメモ" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --ink:#3a3b40; --ink-soft:#6f6b6a; --muted:#a59f9c;
+  --bg1:#fbf7f4; --bg2:#eef4f6; --card:#fffdfb;
+  --gold:#c7a36b; --gold-deep:#a9854a; --teal:#5aa8ca; --teal-deep:#3a96bf; --rose:#d9a7ad;
+  --line:#efe7df; --shadow:0 18px 50px rgba(120,110,100,.14);
+  --serif:"Noto Serif JP",serif; --sans:"Noto Sans JP",sans-serif; --script:"Cormorant Garamond","Noto Serif JP",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--sans);color:var(--ink);font-weight:400;line-height:1.9;-webkit-font-smoothing:antialiased;
+  background:radial-gradient(120% 80% at 50% 0%, var(--bg2) 0%, var(--bg1) 55%, var(--bg1) 100%);
+  background-attachment:fixed;min-height:100vh}
+.wrap{max-width:560px;margin:0 auto;padding:30px 18px 60px;position:relative;z-index:2}
+
+/* キラキラ（背景の星） */
+.stars{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.star{position:absolute;line-height:1;color:var(--gold);
+  text-shadow:0 0 8px rgba(199,163,107,.95),0 0 16px rgba(90,168,202,.5);
+  opacity:0;animation:twinkle var(--dur,5s) ease-in-out infinite;animation-delay:var(--dl,0s)}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.5) rotate(0deg)}50%{opacity:1;transform:scale(1.15) rotate(15deg)}}
+@media (prefers-reduced-motion:reduce){.star{animation:none;opacity:.7}}
+
+/* ブランド */
+.brand{text-align:center;margin-bottom:6px}
+.brand-mark{font-family:var(--script);font-style:italic;font-weight:600;font-size:38px;letter-spacing:.02em;line-height:1;
+  background:linear-gradient(100deg,var(--gold-deep) 20%,#f3e2bb 45%,#fff 50%,#f3e2bb 55%,var(--gold-deep) 80%);
+  background-size:220% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--gold-deep);
+  animation:shimmer 6s linear infinite}
+@keyframes shimmer{to{background-position:-220% center}}
+.brand-sub{font-family:var(--script);font-size:13px;letter-spacing:.5em;text-transform:uppercase;color:var(--teal-deep);margin-top:6px}
+.brand::after{content:"";display:block;width:46px;height:1px;margin:14px auto 0;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.welcome{text-align:center;color:var(--ink-soft);font-size:13px;margin:12px 0 20px;line-height:1.8}
+
+/* ナビ */
+.nav{display:flex;gap:8px;justify-content:center;margin-bottom:22px;flex-wrap:wrap}
+.nav button{font-family:var(--sans);font-size:13px;font-weight:500;color:var(--ink-soft);background:rgba(255,255,255,.6);
+  border:1px solid var(--line);border-radius:999px;padding:9px 22px;cursor:pointer;transition:all .2s ease}
+.nav button.active{background:#fff;color:var(--teal-deep);border-color:#cfe4ec;box-shadow:0 6px 18px rgba(58,150,191,.14);font-weight:700}
+
+/* カード */
+.card{background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);padding:24px 20px;margin-bottom:18px;animation:rise .6s ease}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* カレンダー */
+.cal-head{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:18px}
+.cal-head .ym{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink);min-width:150px;text-align:center}
+.cal-arrow{font-family:var(--serif);font-size:22px;color:var(--teal-deep);background:#fff;border:1px solid var(--line);
+  width:40px;height:40px;border-radius:50%;cursor:pointer;line-height:1;transition:all .15s ease}
+.cal-arrow:hover{border-color:var(--teal);box-shadow:0 6px 16px rgba(58,150,191,.16)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-w{text-align:center;font-size:11.5px;color:var(--muted);padding:4px 0;font-weight:500}
+.cal-w.sun{color:var(--rose)}
+.cal-w.sat{color:var(--teal-deep)}
+.cal-cell{aspect-ratio:1/1;border-radius:14px;border:1px solid transparent;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;cursor:pointer;position:relative;background:#fff;transition:all .15s ease}
+.cal-cell.empty{background:transparent;cursor:default;border:none}
+.cal-cell .d{font-family:var(--serif);font-size:14.5px;color:var(--ink);line-height:1}
+.cal-cell.sun .d{color:var(--rose)}
+.cal-cell.sat .d{color:var(--teal-deep)}
+.cal-cell.today{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}
+.cal-cell.has{background:linear-gradient(160deg,#fff,#fbf3e6)}
+.cal-cell.sel{background:linear-gradient(160deg,var(--teal),var(--teal-deep));box-shadow:0 8px 18px rgba(58,150,191,.3)}
+.cal-cell.sel .d{color:#fff}
+.cal-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:4px;
+  animation:dotglow 2.6s ease-in-out infinite}
+@keyframes dotglow{0%,100%{box-shadow:0 0 3px rgba(199,163,107,.6)}50%{box-shadow:0 0 9px rgba(199,163,107,1)}}
+.cal-cell.sel .cal-dot{background:#fff}
+.cal-cell .cnt{position:absolute;top:3px;right:5px;font-size:9.5px;color:var(--gold-deep);font-weight:700}
+.cal-cell.sel .cnt{color:#fff}
+
+/* その日のパネル */
+.day-panel{margin-top:4px}
+.day-title{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--ink);text-align:center;margin-bottom:4px}
+.day-sub{text-align:center;font-family:var(--script);font-style:italic;font-size:13px;color:var(--gold-deep);margin-bottom:16px}
+
+.day-item{border:1px solid var(--line);border-radius:16px;background:#fffdfb;padding:14px 16px;margin-bottom:12px}
+.day-item-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.box-number{display:inline-flex;align-items:center;gap:6px;font-family:var(--serif);font-size:15px;font-weight:600;
+  color:var(--gold-deep);letter-spacing:.08em}
+.box-number::before{content:"✦";font-size:12px;color:var(--gold);opacity:.85}
+.box-time{font-size:11.5px;color:var(--muted)}
+.box-word{font-family:var(--serif);font-size:15px;color:var(--ink);line-height:1.9;white-space:pre-wrap}
+.box-del{display:block;margin:6px 0 0 auto;font-family:var(--sans);font-size:11.5px;color:var(--muted);background:none;border:none;cursor:pointer;text-decoration:underline;text-decoration-color:#ddd}
+.box-del:hover{color:var(--rose)}
+.day-empty{text-align:center;color:var(--muted);font-size:13.5px;padding:14px 8px 18px;font-family:var(--serif)}
+
+/* 入力 */
+.eyebrow{text-align:center;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-deep);margin:18px 0 10px}
+.field{margin-bottom:14px}
+.field label{display:block;font-family:var(--serif);font-size:14px;color:var(--ink);margin-bottom:7px}
+.field .hint{font-size:11.5px;color:var(--muted);font-family:var(--sans)}
+input[type=text]{font-family:var(--sans);font-size:15px;width:100%;border:1px solid var(--line);border-radius:14px;
+  background:#fbf8f5;padding:12px 15px;color:var(--ink)}
+textarea{font-family:var(--sans);font-size:15px;line-height:1.9;width:100%;min-height:100px;border:1px solid var(--line);
+  border-radius:16px;background:#fbf8f5;padding:13px 15px;color:var(--ink);resize:vertical}
+input[type=text]:focus,textarea:focus{outline:none;border-color:var(--gold);background:#fff}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.chip{font-family:var(--sans);font-size:12.5px;color:var(--gold-deep);background:#fff;border:1px solid #ecdfca;
+  border-radius:999px;padding:6px 13px;cursor:pointer;transition:all .15s ease}
+.chip:hover{background:#fcf6ec}
+.chip:active{transform:scale(.97)}
+.btn{display:block;width:100%;font-family:var(--sans);font-size:14.5px;font-weight:600;letter-spacing:.06em;color:#fff;
+  background:linear-gradient(135deg,var(--teal),var(--teal-deep));border:none;border-radius:999px;padding:15px;cursor:pointer;
+  box-shadow:0 12px 26px rgba(58,150,191,.26);transition:filter .2s ease,transform .1s ease;margin-top:4px}
+.btn:hover{filter:brightness(1.05)}
+.btn:active{transform:scale(.99)}
+.saved-note{text-align:center;font-size:13px;color:var(--teal-deep);margin-top:10px;min-height:18px;font-family:var(--serif)}
+
+/* 集計 */
+.stat-total{text-align:center;margin-bottom:8px}
+.stat-total .n{font-family:var(--serif);font-size:30px;color:var(--teal-deep);font-weight:600}
+.stat-total .l{font-size:13px;color:var(--muted);margin-left:5px}
+.rank-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.rank-name{font-family:var(--serif);font-size:15px;color:var(--ink);width:90px;flex-shrink:0;text-align:right}
+.rank-bar-wrap{flex:1;background:#f6efe6;border-radius:999px;height:24px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(150,130,100,.12)}
+.rank-bar{height:100%;border-radius:999px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;min-width:34px;
+  transition:width .7s ease;background-size:200% auto;animation:barshine 3.2s linear infinite;
+  background-image:linear-gradient(90deg,#ffe7a3,#f8cf63,#fff3c9,#f6c94e,#ffe7a3);
+  box-shadow:0 2px 12px rgba(240,190,80,.55)}
+@keyframes barshine{to{background-position:-200% center}}
+.rank-bar .c{font-family:var(--serif);font-size:13px;color:#fff;font-weight:700;text-shadow:0 1px 2px rgba(120,90,30,.45)}
+.rank-row.top1 .rank-bar{background-image:linear-gradient(90deg,#a8ecff,#4fc8ee,#dff7ff,#3fb6e6,#a8ecff);
+  box-shadow:0 2px 14px rgba(79,200,238,.6)}
+.rank-row.top1 .rank-bar .c{text-shadow:0 1px 2px rgba(20,90,120,.45)}
+.stat-lead{text-align:center;font-family:var(--serif);font-size:15px;color:var(--ink);line-height:1.9;margin:6px 0 20px;
+  background:#fbf3e6;border-radius:16px;padding:14px 16px}
+.stat-lead b{color:var(--gold-deep);font-size:18px}
+
+.arch-date{font-family:var(--serif);font-size:14px;font-weight:600;color:var(--gold-deep);margin:18px 0 10px;
+  padding-bottom:6px;border-bottom:1px solid var(--line)}
+.empty{text-align:center;color:var(--muted);font-size:14px;padding:34px 10px;font-family:var(--serif);line-height:2}
+.foot{text-align:center;font-family:var(--script);font-style:italic;font-size:14px;color:var(--muted);margin-top:24px}
+.backup{text-align:center;margin-top:18px}
+.backup button{font-family:var(--sans);font-size:12px;color:var(--ink-soft);background:#fff;border:1px solid var(--line);
+  border-radius:999px;padding:9px 18px;margin:4px;cursor:pointer}
+.backup button:hover{border-color:var(--gold)}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="wrap">
+
+  <div class="brand">
+    <div class="brand-mark">Be Grace</div>
+    <div class="brand-sub">Notice</div>
+  </div>
+  <p class="welcome">ディバインからのメッセージ、エンジェルナンバー、ふと目にしたもの。<br>その日の小さな気づきを、カレンダーに残していく場所です。🤍</p>
+
+  <div class="nav">
+    <button id="tab-cal" class="active" onclick="show('cal')">カレンダー</button>
+    <button id="tab-stat" onclick="show('stat')">しゅうけい</button>
+  </div>
+
+  <!-- カレンダー -->
+  <section id="view-cal">
+    <div class="card">
+      <div class="cal-head">
+        <button class="cal-arrow" onclick="moveMonth(-1)">‹</button>
+        <div class="ym" id="ym"></div>
+        <button class="cal-arrow" onclick="moveMonth(1)">›</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+
+    <div class="card day-panel">
+      <div class="day-title" id="dayTitle"></div>
+      <div class="day-sub" id="daySub"></div>
+      <div id="dayList"></div>
+
+      <div class="eyebrow">この日に残す</div>
+      <div class="field">
+        <label>見かけた数字・サイン <span class="hint">（なければ空でも大丈夫）</span></label>
+        <input type="text" id="number" placeholder="例：1111 ／ 222 ／ 白い羽根" />
+      </div>
+      <div class="field">
+        <label>気づいたこと・受け取ったメッセージ</label>
+        <textarea id="note" placeholder="ふと目にしたもの、感じたこと、ディバインからのメッセージ…&#10;思いついたまま、自由に書いてくださいね。"></textarea>
+      </div>
+      <button class="btn" onclick="save()">残す</button>
+      <div class="saved-note" id="savedNote"></div>
+    </div>
+    <p class="foot">あなたが受け取るサインに、意味のないものはひとつもありません。</p>
+  </section>
+
+  <!-- しゅうけい -->
+  <section id="view-stat" class="hidden">
+    <div class="card">
+      <div class="stat-total"><span class="n" id="statTotal">0</span><span class="l">この気づき</span></div>
+      <div id="statBody"></div>
+    </div>
+    <div class="backup">
+      <button onclick="exportData()">バックアップを保存</button>
+      <button onclick="document.getElementById('importFile').click()">バックアップを読み込む</button>
+      <input type="file" id="importFile" accept="application/json" class="hidden" onchange="importData(event)" />
+    </div>
+    <p class="foot">くりかえし届くサインは、あなたへの大切なメッセージです。</p>
+  </section>
+
+</div>
+
+<script>
+const KEY = "begrace_kizuki_memo_v1";
+const NUM_SUGGEST = ["1111","222","333","444","555","777","888","1212","白い羽根","てんとう虫"];
+const WD = ["日","月","火","水","木","金","土"];
+
+let viewY, viewM;     // 表示中の年・月(0-11)
+let selKey;           // 選択中の日 YYYY-MM-DD
+
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || []; }catch(e){ return []; } }
+function store(arr){ localStorage.setItem(KEY, JSON.stringify(arr)); }
+
+function pad(n){ return (n<10?"0":"")+n; }
+function keyOf(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+function entryKey(item){ return item.date || keyOf(new Date(item.at)); }
+function parseKey(k){ const p=k.split("-"); return new Date(+p[0], +p[1]-1, +p[2]); }
+
+function byDate(){
+  const map = {};
+  load().forEach(it=>{ const k=entryKey(it); (map[k]=map[k]||[]).push(it); });
+  return map;
+}
+
+function show(v){
+  document.getElementById("view-cal").classList.toggle("hidden", v!=="cal");
+  document.getElementById("view-stat").classList.toggle("hidden", v!=="stat");
+  document.getElementById("tab-cal").classList.toggle("active", v==="cal");
+  document.getElementById("tab-stat").classList.toggle("active", v==="stat");
+  if(v==="stat") renderStats();
+}
+
+/* ---- カレンダー描画 ---- */
+function renderCal(){
+  const map = byDate();
+  const todayKey = keyOf(new Date());
+  document.getElementById("ym").textContent = viewY+"年 "+(viewM+1)+"月";
+
+  const first = new Date(viewY, viewM, 1);
+  const startW = first.getDay();
+  const days = new Date(viewY, viewM+1, 0).getDate();
+
+  let html = "";
+  WD.forEach((w,i)=>{ html += '<div class="cal-w '+(i===0?"sun":i===6?"sat":"")+'">'+w+'</div>'; });
+  for(let i=0;i<startW;i++) html += '<div class="cal-cell empty"></div>';
+  for(let d=1; d<=days; d++){
+    const k = viewY+"-"+pad(viewM+1)+"-"+pad(d);
+    const wd = new Date(viewY, viewM, d).getDay();
+    const has = map[k] && map[k].length;
+    const cls = ["cal-cell"];
+    if(wd===0) cls.push("sun"); if(wd===6) cls.push("sat");
+    if(k===todayKey) cls.push("today");
+    if(has) cls.push("has");
+    if(k===selKey) cls.push("sel");
+    html += '<div class="'+cls.join(" ")+'" onclick="selectDay(\''+k+'\')">'+
+              '<span class="d">'+d+'</span>'+
+              (has?'<span class="cal-dot"></span><span class="cnt">'+map[k].length+'</span>':'')+
+            '</div>';
+  }
+  document.getElementById("calGrid").innerHTML = html;
+  renderDay();
+}
+
+function moveMonth(step){
+  viewM += step;
+  if(viewM<0){ viewM=11; viewY--; }
+  if(viewM>11){ viewM=0; viewY++; }
+  renderCal();
+}
+
+function selectDay(k){ selKey = k; renderCal(); }
+
+/* ---- その日のパネル ---- */
+function renderDay(){
+  const d = parseKey(selKey);
+  const todayKey = keyOf(new Date());
+  document.getElementById("dayTitle").textContent =
+    (selKey===todayKey?"今日 ・ ":"")+ (d.getMonth()+1)+"月"+d.getDate()+"日 ("+WD[d.getDay()]+")";
+  const list = (byDate()[selKey]||[]).slice().sort((a,b)=> new Date(a.at)-new Date(b.at));
+  document.getElementById("daySub").textContent = list.length ? list.length+" つの気づき" : "まだ気づきはありません";
+
+  const box = document.getElementById("dayList");
+  if(!list.length){
+    box.innerHTML = '<div class="day-empty">この日に受け取ったサインを、下から残してみましょう。</div>';
+    return;
+  }
+  box.innerHTML = list.map(it=>{
+    const t = new Date(it.at);
+    const time = pad(t.getHours())+":"+pad(t.getMinutes());
+    const num = it.number ? '<span class="box-number">'+esc(it.number)+'</span>' : '<span></span>';
+    const word = it.note ? '<div class="box-word">'+esc(it.note)+'</div>' : '';
+    return '<div class="day-item"><div class="day-item-top">'+num+'<span class="box-time">'+time+'</span></div>'+
+           word+'<button class="box-del" onclick="del('+it.id+')">消す</button></div>';
+  }).join("");
+}
+
+function save(){
+  const number = document.getElementById("number").value.trim();
+  const note = document.getElementById("note").value.trim();
+  if(!number && !note){ flash("ひとことでも書いて、残してみてくださいね。"); return; }
+  const now = new Date();
+  const d = parseKey(selKey);
+  // 選択日 ＋ 今の時刻
+  const at = new Date(d.getFullYear(),d.getMonth(),d.getDate(),now.getHours(),now.getMinutes(),now.getSeconds());
+  const arr = load();
+  arr.push({ id: Date.now(), at: at.toISOString(), date: selKey, number, note });
+  store(arr);
+  document.getElementById("number").value = "";
+  document.getElementById("note").value = "";
+  flash("残しました。🤍");
+  renderCal();
+}
+
+function flash(msg){
+  const el = document.getElementById("savedNote");
+  el.textContent = msg;
+  clearTimeout(el._t);
+  el._t = setTimeout(()=>{ el.textContent=""; }, 3200);
+}
+
+function del(id){
+  if(!confirm("この気づきを消しますか？\n（消すと元には戻せません）")) return;
+  store(load().filter(x=>x.id!==id));
+  renderCal();
+  if(!document.getElementById("view-stat").classList.contains("hidden")) renderStats();
+}
+
+/* ---- 集計 ---- */
+function splitSigns(s){
+  return (s||"").split(/[\/／,、，\s]+/).map(x=>x.trim()).filter(Boolean);
+}
+function renderStats(){
+  const arr = load();
+  document.getElementById("statTotal").textContent = arr.length;
+  const body = document.getElementById("statBody");
+  if(!arr.length){
+    body.innerHTML = '<div class="empty">まだ気づきはありません。<br>カレンダーから、最初のひとつを残してみましょう。</div>';
+    return;
+  }
+  const tally = {};
+  arr.forEach(it=> splitSigns(it.number).forEach(s=>{ tally[s]=(tally[s]||0)+1; }));
+  const ranked = Object.keys(tally).map(k=>({name:k,count:tally[k]})).sort((a,b)=>b.count-a.count);
+
+  if(!ranked.length){
+    body.innerHTML = '<div class="empty">数字やサインは、まだ記録されていません。<br>「見かけた数字・サイン」を入れると、ここに集計されます。</div>';
+    return;
+  }
+  let html = "";
+  if(ranked.length){
+    const max = ranked[0].count;
+    html += '<div class="eyebrow">エンジェルナンバー集計</div>';
+    html += '<div class="stat-lead">いちばん多く届いているのは<br><b>'+esc(ranked[0].name)+'</b>（'+ranked[0].count+'回）です。</div>';
+    html += ranked.map((r,i)=>{
+      const w = Math.max(8, Math.round(r.count/max*100));
+      return '<div class="rank-row '+(i===0?"top1":"")+'">'+
+               '<div class="rank-name">'+esc(r.name)+'</div>'+
+               '<div class="rank-bar-wrap"><div class="rank-bar" style="width:'+w+'%"><span class="c">'+r.count+'回</span></div></div>'+
+             '</div>';
+    }).join("");
+  }
+  body.innerHTML = html;
+}
+
+function esc(s){ return (s||"").replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+/* ---- バックアップ ---- */
+function exportData(){
+  const data = localStorage.getItem(KEY) || "[]";
+  const blob = new Blob([data], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  const d = new Date();
+  a.download = "気づきメモ_バックアップ_"+d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()+".json";
+  a.click();
+  alert("バックアップを保存しました。");
+}
+function importData(ev){
+  const file = ev.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try{
+      const incoming = JSON.parse(e.target.result);
+      if(!Array.isArray(incoming)) throw new Error();
+      const cur = load();
+      const ids = new Set(cur.map(x=>x.id));
+      store(cur.concat(incoming.filter(x=>!ids.has(x.id))));
+      renderStats();
+      alert("読み込みました。");
+    }catch(err){ alert("うまく読み込めませんでした。バックアップのファイルか確認してみてくださいね。"); }
+  };
+  reader.readAsText(file);
+  ev.target.value = "";
+}
+
+/* ---- 初期化 ---- */
+(function init(){
+  const now = new Date();
+  viewY = now.getFullYear(); viewM = now.getMonth(); selKey = keyOf(now);
+  makeStars();
+  renderCal();
+})();
+
+function makeStars(){
+  const layer = document.getElementById("stars");
+  const glyphs = ["✦","✧","✨","⋆","✦","✧"];
+  let html = "";
+  for(let i=0;i<60;i++){
+    const g = glyphs[Math.floor(Math.random()*glyphs.length)];
+    const size = (Math.random()*16+9).toFixed(0);
+    const left = (Math.random()*98).toFixed(1);
+    const top = (Math.random()*100).toFixed(1);
+    const dur = (Math.random()*3.5+2.5).toFixed(1);
+    const dl = (Math.random()*5).toFixed(1);
+    html += '<span class="star" style="font-size:'+size+'px;left:'+left+'%;top:'+top+'%;--dur:'+dur+'s;--dl:'+dl+'s">'+g+'</span>';
+  }
+  layer.innerHTML = html;
+}
+</script>
+</body>
+</html>
